@@ -1,10 +1,17 @@
-class UsersController < ApplicationController
-    skip_before_action :is_authorized, only: [:create, :login]
+class Api::V1::UsersController < ApplicationController
+    skip_before_action :is_authorized, only: [:create, :login, :show, :index]
 
+    #user data delivered on fetch
     def user_profile
         render json: @user
     end
-    
+
+    # for testing purposes
+    def show
+        @user = User.find_by(params[:user_id])
+        render json: @user
+    end
+
     def index
         @users = User.all
         render json: @users
