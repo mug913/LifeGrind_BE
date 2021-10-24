@@ -10,10 +10,48 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_18_213200) do
+ActiveRecord::Schema.define(version: 2021_10_24_165814) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "areas", force: :cascade do |t|
+    t.string "name"
+    t.integer "position"
+    t.integer "streak"
+    t.integer "level"
+    t.bigint "user_id", null: false
+    t.string "type"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_areas_on_user_id"
+  end
+
+  create_table "records", force: :cascade do |t|
+    t.datetime "date"
+    t.string "detail_1_type"
+    t.string "detail_1_data"
+    t.string "detail_2_type"
+    t.string "detail_2_data"
+    t.string "detail_3_type"
+    t.string "detail_3_data"
+    t.bigint "subarea_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["subarea_id"], name: "index_records_on_subarea_id"
+  end
+
+  create_table "subareas", force: :cascade do |t|
+    t.string "name"
+    t.integer "position"
+    t.integer "streak"
+    t.integer "level"
+    t.bigint "area_id", null: false
+    t.integer "details"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["area_id"], name: "index_subareas_on_area_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "username"
@@ -23,4 +61,7 @@ ActiveRecord::Schema.define(version: 2021_09_18_213200) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "areas", "users"
+  add_foreign_key "records", "subareas"
+  add_foreign_key "subareas", "areas"
 end
