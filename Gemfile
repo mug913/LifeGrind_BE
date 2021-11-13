@@ -48,6 +48,11 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+#server login variable storage
 gem 'figaro'
-gem "jwt", "~> 2.2"
-gem "rack-cors"
+#webtoken creation for user auth
+gem 'jwt', '~> 2.2'
+#enable cors
+gem 'rack-cors'
+#serialzer for api output 
+gem 'jsonapi-serializer'

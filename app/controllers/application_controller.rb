@@ -27,7 +27,7 @@ class ApplicationController < ActionController::Base
         if(@user_id)
             @user = User.find(@user_id)
         else
-            nil
+            render json:  {error: "expired token"}
         end
     end
 
