@@ -37,7 +37,7 @@ class Api::V1::UsersController < ApplicationController
         if user && user.authenticate(params[:user][:password])
             exp = Time.now.to_i + 1 * 6
             token = JWT.encode({user_id: user.id, exp: exp}, Rails.application.secrets.secret_key_base[0])
-            render json: {user: UserSerializer.new(user, fields: {areas: [:name]}).serializable_hash, token: token}
+            render json: {user: UserSerializer.new(user, fields: {areas: [:name]}).serializable_hash, token: token, status: 202}
         else 
             render json: {error: "Email or Password Invalid", status: 401}
         end
