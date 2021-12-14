@@ -2,8 +2,11 @@ class Api::V1::AreasController < ApplicationController
     skip_before_action :is_authorized, only: [:show, :index]
 
     def create
-        @user.areas.create(name: params[:name], position: (@user.areas.length + 1), streak: 0, level: 0)
-        render json: {areas: @user.areas, status: 422}
+        #limit of 6 on backend precautionary, should be prohibited by UI design on front end. 
+        if @user.areas.length < 7
+            @user.areas.create(name: params[:name], position: (@user.areas.length ), streak: 0, level: 0)
+        end
+            render json: {areas: @user.areas, status: 422}
     end
 
 
