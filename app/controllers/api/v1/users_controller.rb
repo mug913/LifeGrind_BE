@@ -27,9 +27,10 @@ class Api::V1::UsersController < ApplicationController
     def create
         user = User.create(user_params)
         if user.save
-            for i in 0..1 do
-                user.areas.create(name: "", position: i, streak: 0, level: 0)
-            end
+            #create default DayArea
+            user.areas.create(name: "DayLog", position: 0, streak: 0, level: 0)
+            #create first unassigned Area
+            user.areas.create(name: "", position: 1, streak: 0, level: 0)
             login()
         else
             render json: {error: user.errors.full_messages, status: 422}

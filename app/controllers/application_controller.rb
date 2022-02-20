@@ -27,7 +27,7 @@ class ApplicationController < ActionController::Base
         if(@user_id)
             @user = User.find(@user_id)
         else
-            render json:  {error: "expired token"}
+            render json:  {error: "access denied"}
         end
     end
 
