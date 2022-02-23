@@ -4,11 +4,16 @@ class Api::V1::AreasController < ApplicationController
     def create
         #limit of 6 on backend precautionary, should be prohibited by UI design on front end. 
         if @user.areas.length < 7
-            @user.areas.create(name: params[:name], position: (@user.areas.length ), streak: 0, level: 0)
+            @user.areas.create(name: "", position: (@user.areas.length), streak: 0, level: 0)
         end
             render json: {areas: @user.areas, status: 422}
     end
 
+    def edit
+        area = Area.find_by(id: params[:id])
+        area.update(name: params[:name])
+        create()
+    end
 
     def user_params
         params.require(:area).permit(:name)
