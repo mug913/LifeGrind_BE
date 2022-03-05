@@ -11,14 +11,12 @@ class Api::V1::UsersController < ApplicationController
     #user data delivered on fetch
     def user_profile
         create_key()
-        #options = {include: [:areas]}
         render json: {user: @user.as_json(include: {areas: {include: :subareas}}, only: [:username, :id]), token: @token, status: 202}
     end
 
     # for testing purposes
     def show
         user = User.find_by_id(params[:id])
-        # options = {include: [:areas]}
         render json: user.as_json(include: {areas: {include: :subareas}}, only: [:username, :id])
     end
         
