@@ -30,7 +30,6 @@ class Api::V1::UsersController < ApplicationController
         if user.save
             #create default DayArea
             @DefaultDay = user.areas.create(name: "DayLog", position: 0, streak: 0, level: 0)
-            @DefaultDay.subareas.create(name: "Create Daily Metric", position: 0, streak: 0, level: 0)
             #create first unassigned Area
             user.areas.create(name: "", position: 1, streak: 0, level: 0)
             login()

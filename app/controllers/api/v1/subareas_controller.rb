@@ -16,6 +16,13 @@ class Api::V1::SubareasController < ApplicationController
             end
         end
     end
+    
+    def destroy
+        subarea = Subarea.find_by_id(params[:id])
+        area=Area.find_by_id(subarea.area_id)
+        subarea.destroy
+        render json: {data: area.subareas, status: 422}
+    end
 
     def user_params
         params.require(:subarea).permit(area: [:id], options: [:name, :details])
