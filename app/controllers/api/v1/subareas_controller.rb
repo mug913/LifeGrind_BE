@@ -11,7 +11,8 @@ class Api::V1::SubareasController < ApplicationController
         area = Area.find_by_id(params[:area][:id])
         if area.user.id == @user.id
             if area.position == 0 && area.subareas.length < 7
-                area.subareas.create(name: params[:options][:name], position: (area.subareas.length), details: params[:options][:details], streak: 0, level: 0)
+                subarea = area.subareas.create(name: params[:options][:name], position: (area.subareas.length), details: params[:options][:details], streak: 0, level: 0)
+                subarea.records.create(detail_1_data: params[:options][:detail_1], detail_2_data: params[:options][:detail_2], detail_3_data: params[:options][:detail_3] )
                 render json: {data: area.subareas, status: 422}
             end
         end
@@ -25,7 +26,7 @@ class Api::V1::SubareasController < ApplicationController
     end
 
     def user_params
-        params.require(:subarea).permit(area: [:id], options: [:name, :details])
+        params.require(:subarea).permit(area: [:id], options: [:name, :details, :detail_1,:detail_2,:detail_3])
     end
 
 end
