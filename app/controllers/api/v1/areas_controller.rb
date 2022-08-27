@@ -18,6 +18,7 @@ class Api::V1::AreasController < ApplicationController
     def edit
         area = Area.find_by(id: params[:id])
         area.update(name: params[:name])
+           subarea = area.subareas.create(name: "default", position: (area.subareas.length))
         create()
     end
 
