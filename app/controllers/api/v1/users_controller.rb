@@ -11,7 +11,7 @@ class Api::V1::UsersController < ApplicationController
     #user data delivered on fetch
     def user_profile
         create_key()
-        render json: {user: @user.as_json(include: {areas: {include: :subareas}}, only: [:username, :id]), token: @token, status: 202}
+        render json: {user: @user.as_json(include: {areas: {include: {subareas: {include: :records}}}}, only: [:username, :id]), token: @token, status: 202}
     end
 
     # for testing purposes
@@ -44,7 +44,7 @@ class Api::V1::UsersController < ApplicationController
            exp = Time.now.to_i + 1 * 6000
            token = JWT.encode({user_id: @user.id, exp: exp}, Rails.application.secrets.secret_key_base[0])
             create_key()
-            render json: {user: @user.as_json(include: {areas: {include: :subareas}}, only: [:username, :id]), token: @token, status: 202}
+            render json: {user: @user.as_json(include: {areas: {include: {subareas: {include: :records}}}}, only: [:username, :id]), token: @token, status: 202}
         else 
             render json: {error: "Email or Password Invalid", status: 401}
         end

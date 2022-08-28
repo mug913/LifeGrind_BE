@@ -7,14 +7,13 @@ class Api::V1::RecordsController < ApplicationController
 
     def create
         area = Area.find_by_id(params[:area][:id])
-        # Rails.logger.info `Pos=#{area.position}`
         if area.user.id == @user.id && area.position != 0
-            # subarea = Subarea.find_by_id(params[:subarea][:id])
             subarea = area.subareas.first
-            Rails.logger.info area.subareas.length
             subarea.records.create(detail_1_data: params[:detail_1_data], detail_2_data: params[:detail_2_data], detail_3_data: params[:detail_3_data] )
+            render json: {data: subarea.records}
         else
             subarea.records.create(detail_1_data: params[:detail_1_data], detail_2_data: params[:detail_2_data], detail_3_data: params[:detail_3_data] )
+            render json: {data: subarea.records}
         end
     end
 
