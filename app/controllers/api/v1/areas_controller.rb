@@ -22,8 +22,22 @@ class Api::V1::AreasController < ApplicationController
         create()
     end
 
+    def destroy
+        #destroy requested area
+        area = Area.find_by(id: params[:id])
+        area.destroy
+        #reinitialize area field for new creation
+        if @user.areas.length < 7
+            @user.areas.create(name: "", position: params[:pos], streak: 0, level: 0)
+        end
+        #if another vacant area exists which is not in the current position, destroy it as well
+        blanks = @user.areas.where("name = ''")
+        blanks.filter_map {|blank|  blank.destroy if blank.position != params[:pos].to_i}
+        render json: {areas: @user.areas, status: 422}
+    end
+
     def user_params
-        params.require(:area).permit(:name)
+        params.require(:area).permit(:name, :pos)
     end
 
 end
