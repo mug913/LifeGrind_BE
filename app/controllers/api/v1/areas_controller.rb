@@ -10,7 +10,8 @@ class Api::V1::AreasController < ApplicationController
     def create
         #limit of 6 on backend precautionary, should be prohibited by UI design on front end. 
         if @user.areas.length < 7
-            @user.areas.create(name: "", position: (@user.areas.length), streak: 0, level: 0)
+           next_pos = find_next_pos()
+           @user.areas.create(name: "", position: (next_pos), streak: 0, level: 0)
         end
             render json: {areas: @user.areas, status: 422}
     end
@@ -25,15 +26,22 @@ class Api::V1::AreasController < ApplicationController
     def destroy
         #destroy requested area
         area = Area.find_by(id: params[:id])
-        area.destroy
-        #reinitialize area field for new creation
-        if @user.areas.length < 7
-            @user.areas.create(name: "", position: params[:pos], streak: 0, level: 0)
-        end
-        #if another vacant area exists which is not in the current position, destroy it as well
+        area.destroy!
+        #if another vacant area exists, destroy it as well
         blanks = @user.areas.where("name = ''")
-        blanks.filter_map {|blank|  blank.destroy if blank.position != params[:pos].to_i}
-        render json: {areas: @user.areas, status: 422}
+        blanks.filter_map {|blank|  blank.delete if blank.position != params[:pos].to_i}
+        #reinitialize area field for new creation
+        create()
+    end
+
+    def find_next_pos
+        positions = (0..6).to_a
+        #logger.debug "positions: #{positions}" 
+        occupied_pos = @user.areas.map {|a| a.position}
+        #logger.debug "occupied: #{occupied_pos}"
+        open_pos = positions - occupied_pos
+        #logger.debug "nextd: #{open_pos.first}"
+        return open_pos.first
     end
 
     def user_params
