@@ -1,0 +1,21 @@
+services:
+  - name: life-grind-be
+    type: web
+    env: ruby
+    repo: https://github.com/render-examples/rails-6
+    buildCommand: bundle install
+    startCommand: bundle exec puma -C config/puma.rb
+    envVars:
+     - key: SECRET_KEY_BASE
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: life-grind-db
+          property: connectionString
+
+databases:
+  - name: life-grind-db
+services:
+  # …snip…
+  - name: life-grind-redis
+    type: redis
