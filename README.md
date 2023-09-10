@@ -1,3 +1,3 @@
 # README
 
-A Biometric tracking tool.
+A life grinder
