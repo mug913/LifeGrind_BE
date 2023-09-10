@@ -2,7 +2,6 @@ services:
   - name: life-grind-be
     type: web
     env: ruby
-    repo: https://github.com/render-examples/rails-6
     buildCommand: bundle install
     startCommand: bundle exec puma -C config/puma.rb
     envVars:
@@ -16,6 +15,5 @@ services:
 databases:
   - name: life-grind-db
 services:
-  # …snip…
   - name: life-grind-redis
     type: redis
