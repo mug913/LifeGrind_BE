@@ -1,19 +1,18 @@
-services:
+databases:
   - name: life-grind-be
-    type: web
-    env: ruby
-    buildCommand: bundle install
-    startCommand: bundle exec puma -C config/puma.rb
+    databaseName: life-grind-db
+    user: life-grind-be
+
+services:
+  - type: web
+    name: life-grind-be
+    runtime: ruby
+    buildCommand: "./bin/render-build.sh"
+    startCommand: "bundle exec puma -C config/puma.rb"
     envVars:
-     - key: SECRET_KEY_BASE
-        generateValue: true
       - key: DATABASE_URL
         fromDatabase:
           name: life-grind-db
           property: connectionString
-
-databases:
-  - name: life-grind-db
-services:
-  - name: life-grind-redis
-    type: redis
+      - key: RAILS_MASTER_KEY
+        sync: false
