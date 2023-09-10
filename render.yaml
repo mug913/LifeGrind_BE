@@ -1,7 +1,7 @@
 databases:
   - name: life-grind-be
-    databaseName: life-grind-be
-    user: life-grind-be
+    databaseName: lifegrinddb01
+    user: lifegrinddb01_user
 
 services:
   - type: web
