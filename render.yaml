@@ -1,6 +1,6 @@
 databases:
   - name: life-grind-be
-    databaseName: life-grind-db
+    databaseName: life-grind-be
     user: life-grind-be
 
 services:
