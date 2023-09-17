@@ -5,12 +5,13 @@ class Api::V1::UsersController < ApplicationController
 
     def create_key
         exp = Time.now.to_i + 1 * 6000
-        @token = JWT.encode({user_id: @user.id, exp: exp}, Rails.application.secrets.secret_key_base)
+        @token = JWT.encode({user_id: @user.id, exp: exp}, Rails.application.secrets.secret_key_base, algorithm="HS256")
     end
 
     #user data delivered on fetch
     def user_profile
         create_key()
+        logger.debug "key created in user#profile: #{@token}"
         render json: {user: @user.as_json(include: {areas: {include: {subareas: {include: :records}}}}, only: [:username, :id]), token: @token, status: 202}
     end
 
@@ -40,15 +41,8 @@ class Api::V1::UsersController < ApplicationController
 
     def login
         @user = User.find_by(email: params[:user][:email])
-        logger.debug "user found: #{@user.email}"
         if @user && @user.authenticate(params[:user][:password])
-            logger.debug "user authenticated: #{@user.email}"
-           exp = Time.now.to_i + 1 * 6000
-           logger.debug "exp time set: #{exp}"
-           token = JWT.encode({user_id: @user.id, exp: exp}, Rails.application.secrets.secret_key_base)
-           logger.debug "token made: #{token}"
             create_key()
-            logger.debug "key created"
             render json: {user: @user.as_json(include: {areas: {include: {subareas: {include: :records}}}}, only: [:username, :id]), token: @token, status: 202}
         else 
             render json: {error: "Email or Password Invalid", status: 401}
