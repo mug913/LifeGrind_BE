@@ -18,7 +18,7 @@ class ApplicationController < ActionController::Base
         if auth_header
             user_token = auth_header.split(" ")[1]
             begin
-            @user_id = JWT.decode(user_token, Rails.application.secrets.secret_key_base[0])[0]["user_id"]
+            @user_id = JWT.decode(user_token, Rails.application.secrets.secret_key_base)[0]["user_id"]
     #prevent and JWT Decode error to crash app and instead return nil        
             rescue JWT::DecodeError
                 nil
