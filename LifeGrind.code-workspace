@@ -8,10 +8,11 @@
 =======
 	"folders": [
 		{
-			"path": "..\\LifeGrind_FE"
+			"path": "."
 		},
 		{
-			"path": "."
+			"name": "LifeGrind_FE",
+			"path": "..\\LifeGrind_FE"
 		}
 	],
 	"settings": {}
