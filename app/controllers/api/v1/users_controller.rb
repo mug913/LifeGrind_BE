@@ -5,7 +5,7 @@ class Api::V1::UsersController < ApplicationController
 
     def create_key
         exp = Time.now.to_i + 1 * 6000
-        @token = JWT.encode({user_id: @user.id, exp: exp}, Rails.application.secrets.secret_key_base[0])
+        @token = JWT.encode({user_id: @user.id, exp: exp}, Rails.application.secrets.secret_key_base)
     end
 
     #user data delivered on fetch
@@ -45,7 +45,7 @@ class Api::V1::UsersController < ApplicationController
             logger.debug "user authenticated: #{@user.email}"
            exp = Time.now.to_i + 1 * 6000
            logger.debug "exp time set: #{exp}"
-           token = JWT.encode({user_id: @user.id, exp: exp}, Rails.application.secrets.secret_key_base[0])
+           token = JWT.encode({user_id: @user.id, exp: exp}, Rails.application.secrets.secret_key_base)
            logger.debug "token made: #{token}"
             create_key()
             logger.debug "key created"
