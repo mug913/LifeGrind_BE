@@ -42,4 +42,3 @@ yarn-debug.log*
 
 # Ignore application configuration
 /config/application.yml
-/config/render.yml
